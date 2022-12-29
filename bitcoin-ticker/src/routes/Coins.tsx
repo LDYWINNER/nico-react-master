@@ -3,6 +3,8 @@ import styled from "styled-components";
 import { useQuery } from "react-query";
 import { Helmet } from "react-helmet";
 import { fetchCoins } from "./api";
+import { useSetRecoilState } from "recoil";
+import { isDarkAtom } from "../atoms";
 
 const Container = styled.div`
     padding: 60px 20px;
@@ -21,7 +23,7 @@ const CoinsList = styled.ul``;
 
 const Coin = styled.li`
     background-color: white;
-    color: ${props => props.theme.bgColor};
+    color: ${props => props.theme.textColor};
     border-radius: 15px;
     margin-bottom: 10px;
     a {
@@ -65,6 +67,8 @@ interface ICoin {
 };
 
 function Coins() {
+    const setDarkAtom = useSetRecoilState(isDarkAtom);
+    const toggleDarkAtom = () => setDarkAtom((prev) => !prev);
     const { isLoading, data } = useQuery<ICoin[]>("allCoins", fetchCoins);
     return (
         <Container>
@@ -73,6 +77,7 @@ function Coins() {
             </Helmet>
             <Header>
                 <Title>코인</Title>
+                <button onClick={toggleDarkAtom}>Toggle Mode</button>
             </Header>
             {isLoading ? <Loader>Loading...</Loader> : (
                 <CoinsList>
