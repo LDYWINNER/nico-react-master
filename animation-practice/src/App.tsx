@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { motion, useMotionValue, useTransform } from "framer-motion";
 
-const Wrapper = styled.div`
+const Wrapper = styled(motion.div)`
   height: 100vh;
   width: 100vw;
   display: flex;
@@ -19,10 +19,17 @@ const Box = styled(motion.div)`
 
 function App() {
   const x = useMotionValue(0);
-  const scale = useTransform(x, [-800, 0, 800], [2, 1, 0.1]);
+  const rotate = useTransform(x, [-800, 800], [-360, 360]);
+  const gradient = useTransform(x,
+    [-800, 0, 800],
+    [
+      "linear-gradient(135deg,rgb(0, 194, 238),rgb(0, 107, 238))",
+      "linear-gradient(135deg,rgb(238, 0, 153),rgb(221, 0, 238))",
+      "linear-gradient(135deg,rgb(0, 238, 103),rgb(206, 238, 0))"
+    ]);
   return (
-    <Wrapper>
-      <Box style={{ x, scale }} drag="x" dragSnapToOrigin />
+    <Wrapper style={{ background: gradient }}>
+      <Box style={{ x, rotateZ: rotate }} drag="x" dragSnapToOrigin />
     </Wrapper>
   );
 }
