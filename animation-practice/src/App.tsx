@@ -26,24 +26,28 @@ const Box = styled(motion.div)`
 `;
 
 const box = {
-  entry: (isBack: boolean) => ({
-    x: isBack ? -500 : 500,
-    opacity: 0,
-    scale: 0,
-  }),
+  entry: (isBack: boolean) => {
+    return {
+      x: isBack ? -500 : 500,
+      opacity: 0,
+      scale: 0,
+    }
+  },
   center: {
     x: 0,
     opacity: 1,
     scale: 1,
     transition: {
-      duration: 0.3,
+      duration: 1,
     },
   },
   exit: (isBack: boolean) => ({
     x: isBack ? 500 : -500,
     opacity: 0,
     scale: 0,
-    transition: { duration: 0.3 },
+    transition: {
+      duration: 1
+    }
   }),
 };
 
@@ -60,21 +64,17 @@ function App() {
   };
   return (
     <Wrapper>
-      <AnimatePresence custom={back}>
-        {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((i) =>
-          i === visible ? (
-            <Box
-              custom={back}
-              variants={box}
-              initial="entry"
-              animate="center"
-              exit="exit"
-              key={i}
-            >
-              {i}
-            </Box>
-          ) : null
-        )}
+      <AnimatePresence exitBeforeEnter custom={back}>
+        <Box
+          custom={back}
+          variants={box}
+          initial="entry"
+          animate="center"
+          exit="exit"
+          key={visible}
+        >
+          {visible}
+        </Box>
       </AnimatePresence>
       <button onClick={nextPlease}>next</button>
       <button onClick={prevPlease}>prev</button>
