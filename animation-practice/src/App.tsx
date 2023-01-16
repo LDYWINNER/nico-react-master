@@ -37,31 +37,25 @@ const Overlay = styled(motion.div)`
   align-items: center;
 `;
 
-const overlay = {
-  hidden: { backgroundColor: "rgba(0, 0, 0, 0)" },
-  visible: { backgroundColor: "rgba(0, 0, 0, 0.5)" },
-  exit: { backgroundColor: "rgba(0, 0, 0, 0)" },
-};
-
 function App() {
-  const [id, setId] = useState<null | string>(null);
+  const [clicked, setClicked] = useState(false);
+  const toggle = () => setClicked((prev) => !prev);
   return (
-    <Wrapper>
+    <Wrapper onClick={toggle}>
       <Grid>
-        {["1", "2", "3", "4"].map((n) => (
-          <Box onClick={() => setId(n)} key={n} layoutId={n} />
-        ))}
+        <Box layoutId="hello" />
+        <Box />
+        <Box />
+        <Box />
       </Grid>
       <AnimatePresence>
-        {id ? (
+        {clicked ? (
           <Overlay
-            variants={overlay}
-            onClick={() => setId(null)}
-            initial="hidden"
-            animate="visible"
-            exit="exit"
+            initial={{ backgroundColor: "rgba(0, 0, 0, 0)" }}
+            animate={{ backgroundColor: "rgba(0, 0, 0, 0.5)" }}
+            exit={{ backgroundColor: "rgba(0, 0, 0, 0)" }}
           >
-            <Box layoutId={id} style={{ width: 400, height: 200 }} />
+            <Box layoutId="hello" style={{ width: 400, height: 200 }} />
           </Overlay>
         ) : null}
       </AnimatePresence>
